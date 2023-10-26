@@ -6,10 +6,17 @@
 
 (authors
   "Clément Allain"
+  "Giovanni Bernardi"
+  "Jérémy Ledent"
   "Alexandre Moine"
+  "Vincent Padovani"
 )
 (maintainers
   "clement.allain@inria.fr"
+  "gio@irif.fr"
+  "jeremy.ledent@irif.fr"
+  "alexandre.moine@inria.fr"
+  "padovani@irif.fr"
 )
 
 (package

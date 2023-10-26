@@ -104,4 +104,4 @@ let rec union_sorted l1 l2 =
       else if a2 < a1 then
         a2 :: union_sorted l1  l2'
       else
-        a1:: union_sorted l1' l2'
+        a1 :: union_sorted l1' l2'
