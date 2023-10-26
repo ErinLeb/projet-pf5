@@ -1,0 +1,5 @@
+(library
+  (name pf5)
+  (public_name pf5)
+  (flags (:standard -w A-27-39-33))
+)
