@@ -16,7 +16,6 @@ opam switch create . -y --deps-only
 ## Compilation
 
 Pour compiler le projet, exécutez la commande `make`.
-Pour lancer les tests, exécutez `make test`.
 
 ## Toplevel
 
