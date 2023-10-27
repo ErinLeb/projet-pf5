@@ -21,3 +21,9 @@ Pour compiler le projet, exécutez la commande `make`.
 
 Afin de vous-même tester et déboguer, vous pouvez utiliser le toplevel `utop` qui a été installé.
 Pour le lancer, exécutez la commande `make top`.
+
+## Tests
+
+**Tous les tests n'ont pas encore été publiés.**
+Pour lancer tous les tests disponibles, exécutez `make test`.
+Pour tester seulement les fonctions de la question *i*, exécutez <code>make test-*i*</code>.
