@@ -17,8 +17,13 @@ let pp_answer ppf answer =
 let testable_answer =
   Alcotest.testable pp_answer (=)
 
-let () =
-  add_tests2 "4.1" "repeat" repeat Fmt.int pp_list_char Alcotest.(list char)
+let () = add_tests2
+  "4.1"
+  "repeat"
+  repeat
+  Fmt.int
+  pp_list_char
+  Alcotest.(list char)
   [ 0, !!"", !!"";
     2, !!"", !!"";
     0, !!"a", !!"";
@@ -40,8 +45,13 @@ let rec expr_normalize e =
       [e]
   | Concat (e1, e2) ->
       expr_normalize e1 @ expr_normalize e2
-let () =
-  add_tests2 "4.2" "expr_repeat" (fun n e -> expr_normalize @@ expr_repeat n e) Fmt.int pp_expr (Alcotest.list testable_expr)
+let () = add_tests2
+  "4.2"
+  "expr_repeat"
+  (fun n e -> expr_normalize @@ expr_repeat n e)
+  Fmt.int
+  pp_expr
+  (Alcotest.list testable_expr)
   [ (let e = Base 'a' in 0, e, []);
     (let e = Base 'a' in 1, e, [e]);
     (let e = Base 'a' in 3, e, [e; e; e]);
@@ -56,8 +66,12 @@ let () =
     (let e = Eps in 3, e, []);
   ]
 
-let () =
-  add_tests1 "4.3" "is_empty" is_empty pp_expr Alcotest.bool
+let () = add_tests1
+  "4.3"
+  "is_empty"
+  is_empty
+  pp_expr
+  Alcotest.bool
   [ Eps, true;
     Concat (Eps, Eps), true;
     Star Eps, true;
@@ -72,8 +86,12 @@ let () =
     Star (Base 'a'), false;
   ]
 
-let () =
-  add_tests1 "4.4" "null" null pp_expr Alcotest.bool
+let () = add_tests1
+  "4.4"
+  "null"
+  null
+  pp_expr
+  Alcotest.bool
   [ Eps, true;
     Concat (Eps, Eps), true;
     Concat (Concat (Eps, Eps), Eps), true;
@@ -98,8 +116,12 @@ let () =
     Alt (Joker, Joker), false;
   ]
 
-let () =
-  add_tests1 "4.5" "is_finite" is_finite pp_expr Alcotest.bool
+let () = add_tests1
+  "4.5"
+  "is_finite"
+  is_finite
+  pp_expr
+  Alcotest.bool
   [ Eps, true;
     Base 'a', true;
     Joker, true;
@@ -126,8 +148,13 @@ let () =
     Star (Alt (Eps, Joker)), false;
   ]
 
-let () =
-  add_tests2 "4.6" "product" (fun l1 l2 -> sort_uniq @@ product l1 l2) pp_list_list_char pp_list_list_char  Alcotest.(list (list char))
+let () = add_tests2
+  "4.6"
+  "product"
+  (fun l1 l2 -> sort_uniq @@ product l1 l2)
+  pp_list_list_char
+  pp_list_list_char
+  Alcotest.(list (list char))
   [ [], [], [];
     [!!""], [], [];
     [], [!!""], [];
@@ -145,10 +172,24 @@ let () =
     [!!"aa"; !!"bb"], [!!"cc"; !!"dd"], [!!"aacc"; !!"aadd"; !!"bbcc"; !!"bbdd"];
   ]
 
-(* TODO: 4.7: enumerate*)
+let () = add_tests2
+  "4.7"
+  "enumerate"
+  (fun alphabet e -> Option.map sort_uniq @@ enumerate alphabet e)
+  pp_list_char
+  pp_expr
+  Alcotest.(option (list (list char)))
+  [ !!"abc", Eps, Some [!!""];
+    !!"abc", Concat (Base 'a', Joker), Some [!!"aa"; !!"ab"; !!"ac"];
+    !!"abc", Star (Base 'a'), None;
+  ]
 
-let () =
-  add_tests1 "4.8" "alphabet_expr" alphabet_expr pp_expr Alcotest.(list char)
+let () = add_tests1
+  "4.8"
+  "alphabet_expr"
+  alphabet_expr
+  pp_expr
+  Alcotest.(list char)
   [ Eps, !!"";
     Star (Concat (Base 'a', Joker)), !!"a";
     Alt (Base 'a', Base 'b'), !!"ab";
@@ -158,8 +199,13 @@ let () =
     concat [Alt (Base 'a', Alt (Base 'b', Base 'c')); Base 'd'; Base 'e'; Star (Base 'x')], !!"abcdex";
   ]
 
-let () =
-  add_tests2 "4.9" "repeat" accept_partial pp_expr pp_list_char testable_answer
+let () = add_tests2
+  "4.9"
+  "repeat"
+  accept_partial
+  pp_expr
+  pp_list_char
+  testable_answer
   [ (* Infinite *)
     Star (Base 'a'), !!"a", Infinite;
     (* Epsilon *)
