@@ -201,7 +201,7 @@ let () = add_tests1
 
 let () = add_tests2
   "4.9"
-  "repeat"
+  "accept_partial"
   accept_partial
   pp_expr
   pp_list_char
