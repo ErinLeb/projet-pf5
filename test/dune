@@ -1,5 +1,5 @@
 (tests
   (names test)
   (libraries fmt alcotest pf5)
-  (flags (:standard -w A-32 -open Pf5))
+  (flags (:standard -open Pf5))
 )
