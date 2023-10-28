@@ -50,5 +50,64 @@ let () = add_tests1
     [WC; G; T; C; A], ".GTCA" 
   ]
 
+let () = add_tests2
+  "3.4"
+  "cut_prefix"
+  cut_prefix
+  pp_list_char
+  pp_list_char
+  Alcotest.(option @@ list char)
+  begin
+    let abc = !!"abc" in
+    [ [], [], Some ([]);
+      [], abc, Some (abc);
+      !!"a", abc, Some (!!"bc");
+      !!"ab", abc, Some (!!"c");
+      abc, abc, Some (!!"");
+      !!"dc", abc, None;
+      !!"adc", abc, None;
+      !!"abd", abc, None;
+    ]
+  end
+
+let () = add_tests2
+  "3.5"
+  "first_occ"
+  first_occ
+  pp_list_char
+  pp_list_char
+  Alcotest.(option @@ pair (list char) (list char))
+  begin
+    let abcd = !!"abcd" in
+    [ [], [], Some ([], []);
+      [], abcd, Some ([], abcd);
+      !!"a", abcd, Some ([], !!"bcd");
+      !!"ab", abcd, Some ([], !!"cd");
+      !!"aa", !!"abaaacd", Some (!!"ab", !!"acd");
+      !!"aaa", !!"abaaacd", Some (!!"ab", !!"cd");
+      !!"be", abcd, None;
+      !!"cde", abcd, None;
+    ]
+  end
+
+let () = add_tests3
+  "3.6"
+  "slices_between"
+  slices_between
+  pp_list_char
+  pp_list_char
+  pp_list_char
+  Alcotest.(list (list char))
+  [ !!"ab", !!"cd", !!"ddcdeeffggabhhh", [];
+    !!"ab", !!"cd", !!"ddcdeeffggcdhhh", [];
+    !!"ab", !!"cd", !!"ddabeeffggabhhh", [];
+    !!"ab", !!"cd", !!"ddabeecdffcdggabhhh", [!!"ee"];
+    !!"ab", !!"cd", !!"ddabeecdffabggcdhh", [!!"ee"; !!"gg"];
+    !!"ab", !!"cd", !!"ddabeecdffcdffabggcdhh", [!!"ee"; !!"gg"];
+    !!"ab", !!"cd", !!"ddabeabecdffcdffabggcdhh", [!!"eabe"; !!"gg"];
+    !!"aa", !!"cc", !!"ddaaaeaaecccffaaaffaaaggccchh", [!!"aeaae"; !!"affaaagg"];
+  ]
+    
+
 
   
