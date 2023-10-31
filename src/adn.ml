@@ -27,7 +27,12 @@ let explode (str : string) : char list =
 
 (* conversions *)
 let base_of_char (c : char) : base =
-  failwith "À compléter"
+  match c with
+    'A' -> A
+  | 'C' -> C
+  | 'G' -> G
+  | 'T' -> T
+  | _ -> WC
 
 
 let dna_of_string (s : string) : base list =
@@ -35,8 +40,7 @@ let dna_of_string (s : string) : base list =
 
 
 let string_of_dna (seq : dna) : string =
-  failwith "À compléter"
-
+  List.map string_of_base seq |> String.concat ""
 
 
 (*---------------------------------------------------------------------------*)
