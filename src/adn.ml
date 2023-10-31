@@ -20,7 +20,9 @@ let string_of_base (b : base) : string =
 
 (* explode a string into a char list *)
 let explode (str : string) : char list =
-  failwith "À compléter"
+  let rec aux i char_list = 
+    if i < 0 then char_list else aux (i-1) (str.[i]::char_list)
+    in aux (String.length str - 1) []
 
 
 (* conversions *)
