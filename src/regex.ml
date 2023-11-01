@@ -46,8 +46,18 @@ let product l1 l2 =
   in aux [] l1
   ;;
 
-let enumerate alphabet e =
-  failwith "À compléter"
+let rec enumerate alphabet e =
+  if not (is_finite e) then None
+  else let rec aux e = match e with
+  | Eps -> []
+  | Joker -> List.map (fun x -> [x]) alphabet
+  | Base x  -> [x]
+  | Star a -> []
+  | Concat (a,b) -> product (aux a) (aux b)
+  | Alt (a, b) -> (aux a) @ (aux b)
+  in Some (List.sort_uniq compare (aux e))
+
+
 
 let rec alphabet_expr e =
   failwith "À compléter"
