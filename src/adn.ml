@@ -124,8 +124,15 @@ let consensus (list : 'a list) : 'a consensus =
    are empty, return the empty sequence.
  *)
 
-let consensus_sequence (ll : 'a list list) : 'a consensus list =
-  failwith "À compléter"
+let rec consensus_sequence (ll : 'a list list) : 'a consensus list =
+    if List.for_all ((=) []) ll then []
+    else if List.exists ((=) []) ll then
+      failwith "All lists must be of the same length"
+    else
+        let acc, rest = List.fold_left_map
+            (fun acc x -> List.hd x::acc, List.tl x) [] ll
+        in consensus acc :: consensus_sequence rest
+
 
 (*
  consensus_sequence [[1; 1; 1; 1];
