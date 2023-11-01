@@ -49,18 +49,22 @@ let product l1 l2 =
 let rec enumerate alphabet e =
   if not (is_finite e) then None
   else let rec aux e = match e with
-  | Eps -> []
+  | Eps -> [[]]
   | Joker -> List.map (fun x -> [x]) alphabet
-  | Base x  -> [x]
+  | Base x  -> [[x]]
   | Star a -> []
   | Concat (a,b) -> product (aux a) (aux b)
   | Alt (a, b) -> (aux a) @ (aux b)
   in Some (List.sort_uniq compare (aux e))
 
 
-
-let rec alphabet_expr e =
-  failwith "À compléter"
+let alphabet_expr e =
+  let rec aux e = match e with
+  | Eps | Joker -> []
+  | Base c -> [c]
+  | Concat (a,b) | Alt (a,b) -> aux a @ aux b
+  | Star s -> aux s
+  in List.sort_uniq compare (aux e)
 
 type answer =
   Infinite | Accept | Reject
