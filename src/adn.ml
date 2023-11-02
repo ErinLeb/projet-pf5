@@ -36,7 +36,11 @@ let base_of_char (c : char) : base =
 
 
 let dna_of_string (s : string) : base list =
-  failwith "À compléter"
+  let rec aux char_list dna = 
+    match char_list with 
+     [] -> List.rev dna 
+    | c::r -> aux r (base_of_char c::dna)
+    in aux (explode s) [] 
 
 
 let string_of_dna (seq : dna) : string =
