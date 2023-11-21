@@ -111,7 +111,18 @@ type 'a consensus = Full of 'a | Partial of 'a * int | No_consensus
    greatest number of occurrences and this number is equal to n,
    No_consensus otherwise. *)
 let consensus (list : 'a list) : 'a consensus =
-  failwith "À compléter"
+  (* We could use a hashtable for better performance here *)
+  if list = [] then failwith "the list must be non-empty"
+  else
+    let repartitions = List.fold_left (fun acc x -> match List.assoc_opt  x acc with
+      | Some n -> (x, n+1)::(List.remove_assoc  x acc)
+      | None -> (x, 1)::acc) [] list in
+    if List.length repartitions = 1 then Full (fst @@ List.hd repartitions)
+    else fst @@ List.fold_left  (fun (state, count) (item, count') ->
+        if count = count' then (No_consensus, count)
+        else if count < count' then (Partial(item,count'), count')
+        else (state, count)) (No_consensus, 0) repartitions
+
 
 (*
    consensus [1; 1; 1; 1] = Full 1
@@ -125,8 +136,15 @@ let consensus (list : 'a list) : 'a consensus =
    are empty, return the empty sequence.
  *)
 
-let consensus_sequence (ll : 'a list list) : 'a consensus list =
-  failwith "À compléter"
+let rec consensus_sequence (ll : 'a list list) : 'a consensus list =
+    if List.for_all ((=) []) ll then []
+    else if List.exists ((=) []) ll then
+      failwith "All lists must be of the same length"
+    else
+        let acc, rest = List.fold_left_map
+            (fun acc x -> List.hd x::acc, List.tl x) [] ll
+        in consensus acc :: consensus_sequence rest
+
 
 (*
  consensus_sequence [[1; 1; 1; 1];
