@@ -112,7 +112,7 @@ type 'a consensus = Full of 'a | Partial of 'a * int | No_consensus
    No_consensus otherwise. *)
 let consensus (list : 'a list) : 'a consensus =
   (* We could use a hashtable for better performance here *)
-  if list = [] then failwith "the list must be non-empty"
+  if list = [] then No_consensus
   else
     let repartitions = List.fold_left (fun acc x -> match List.assoc_opt  x acc with
       | Some n -> (x, n+1)::(List.remove_assoc  x acc)
