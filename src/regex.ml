@@ -1,10 +1,20 @@
 open Regex_base
 
-let rec repeat n l =
-  failwith "À compléter"
+let repeat n l = 
+  if n <= 0 then [] else 
+  let rec aux n res = 
+    if n = 1 then res
+    else aux (n-1) l@res 
+  in aux n l;;
 
-let rec expr_repeat n e =
-  failwith "À compléter"
+
+let expr_repeat n e =
+  if n<= 0 then Eps else
+  if n = 1 then e else
+  let rec aux n res = 
+    if n = 1 then res 
+    else aux (n-1) (Concat (e, res))
+    in aux n e ;;
 
 let rec is_empty e =
   failwith "À compléter"
