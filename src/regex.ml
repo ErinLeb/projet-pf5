@@ -16,11 +16,19 @@ let expr_repeat n e =
     else aux (n-1) (Concat (e, res))
     in aux n e ;;
 
-let rec is_empty e =
-  failwith "À compléter"
+let rec is_empty e = match e with
+| Eps -> true
+| Joker | Base _  -> false
+| Star a -> is_empty a
+| Concat (a,b) | Alt (a, b) ->
+    is_empty a && is_empty b
 
-let rec null e =
-  failwith "À compléter"
+let rec null e = match e with
+| Eps -> true
+| Joker | Base _  -> false
+| Star a -> true
+| Concat (a,b) -> null a && null b
+| Alt (a, b) -> null a || null b
 
 let rec is_finite e =
   failwith "À compléter"
