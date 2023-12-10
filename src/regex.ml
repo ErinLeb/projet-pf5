@@ -31,10 +31,20 @@ let rec null e = match e with
 | Alt (a, b) -> null a || null b
 
 let rec is_finite e =
-  failwith "À compléter"
+  match e with 
+  | Eps | Joker | Base _ -> true
+  | Concat (a,b) | Alt (a,b) -> (is_finite a) && (is_finite b)
+  | Star x -> is_empty x
+
+
 
 let product l1 l2 =
-  failwith "À compléter"
+  let rec aux res reste = 
+    match reste with 
+    [] -> res
+    |a::r -> aux ((List.map (fun y -> a@y) l2)@res) r
+  in aux [] l1
+  ;;
 
 let enumerate alphabet e =
   failwith "À compléter"
