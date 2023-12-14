@@ -107,6 +107,56 @@ let () = add_tests3
     !!"ab", !!"cd", !!"ddabeabecdffcdffabggcdhh", [!!"eabe"; !!"gg"];
     !!"aa", !!"cc", !!"ddaaaeaaecccffaaaffaaaggccchh", [!!"aeaae"; !!"affaaagg"];
   ]
+
+let () = add_tests1
+  "3.7"
+  "(fun s -> List.map string_of_dna (cut_genes (dna_of_string s)))"
+  (fun s -> List.map string_of_dna (cut_genes (dna_of_string s)))
+  Fmt.string
+  Alcotest.(list string)
+  [ "", [];
+    "ATGTAA", [""];
+    "AATGTAAA", [""];
+    "AATGATGTAATAAA", ["ATG"];
+    "AATGTAATAAATGATATAA", [""; "ATA"];
+    "AATGTAATAAATGATATAATAATGTG..TATAAA", [""; "ATA"; "TG..TA"];
+    "AATTAATATGATGATGATAATAATGTG..TATAAA", ["ATGATGA"; "TG..TA"]
+  ]
+
+let char_consensus_to_string = function
+  | Full c -> Printf.sprintf "Full %c" c
+  | Partial (c, n) -> Printf.sprintf "Partial (%c, %n)" c n
+  | No_consensus -> "No_consensus"
+let pp_consensus_answer ppf answer =
+  Format.pp_print_string ppf @@ char_consensus_to_string answer
+
+let () = add_tests1
+  "3.8"
+  "consensus"
+  consensus
+  pp_list_char
+  (Alcotest.testable pp_consensus_answer (=))
+  [ !!"aaaa", Full 'a';
+    !!"abacca", Partial ('a', 3); 
+    !!"abccba", No_consensus;
+    [], No_consensus
+  ]
+
+let () = add_tests1
+  "3.9"
+  "consensus_sequence"
+  consensus_sequence
+  pp_list_list_char
+  Alcotest.(list (Alcotest.testable pp_consensus_answer (=)))
+  [ [], [];
+    [!!"acgt"], [Full 'a'; Full 'c'; Full 'g'; Full 't'];
+    [!!"acgt"; !!"agg."], [Full 'a'; No_consensus; Full 'g'; No_consensus];
+    [!!"aaaa"; !!"aaat"; !!"aatt"; !!"attt"],
+    [Full 'a'; Partial ('a', 3); No_consensus; Partial ('t', 3)];
+    [!!"aaagt"; !!"agatt"; !!"a.ttt"; !!"gtttt"],
+    [Partial ('a', 3); No_consensus; No_consensus; Partial ('t', 3); Full 't']
+  ]
+
     
 
 
